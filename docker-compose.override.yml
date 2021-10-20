@@ -1,0 +1,18 @@
+version: "3.6"
+
+services:
+  api:
+    image: rest-api_dev:latest
+    container_name: rest-api_dev
+    command: yarn inspect
+    build:
+      target: build
+    volumes:
+      - ./src:/home/node/app/src
+      - ./config:/home/node/app/config
+      - ./node_modules:/home/node/app/node_modules
+    ports:
+      - 3000:3000
+      - 9229:9229
+    environment:
+      NODE_ENV: development

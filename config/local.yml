@@ -1,0 +1,5 @@
+#  this config overrides default and should not be version checked
+database:
+  host: db
+  username: root
+  password: 1q2w3e4r

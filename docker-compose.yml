@@ -1,0 +1,42 @@
+version: "3.6"
+
+services:
+  api:
+    image: rest-api:latest
+    container_name: rest-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: production
+      NODE_PATH: .
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:3000"]
+      interval: 1m
+      timeout: 5s
+      retries: 30
+
+  db:
+    image: mariadb
+    container_name: rest-api_db
+    volumes:
+      - rest-api_data:/var/lib/mysql/:rw
+    environment:
+      MARIADB_ROOT_PASSWORD: 1q2w3e4r
+      MARIADB_DATABASE: default
+
+  adminer:
+    image: adminer:latest
+    container_name: rest-api_adminer
+    environment:
+      ADMINER_DESIGN: konya
+    ports:
+      - 8888:8080
+
+volumes:
+  rest-api_data:

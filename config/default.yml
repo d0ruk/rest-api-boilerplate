@@ -1,0 +1,15 @@
+app:
+  port: 3000
+  host: 0.0.0.0
+database:
+  dialect: mariadb
+  host: localhost
+  database: default
+  port: 3306
+  pool:
+    min: 0
+    max: 10
+  define:
+    underscored: true
+    timestamps: true
+    paranoid: true

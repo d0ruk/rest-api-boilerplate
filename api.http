@@ -1,0 +1,9 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@ContentType = application/json
+
+###
+GET http://{{host}}
+###
+GET http://{{host}}/asd
