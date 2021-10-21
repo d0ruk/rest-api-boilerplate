@@ -2,7 +2,7 @@ app:
   port: 3000
   host: 0.0.0.0
 database:
-  dialect: mariadb
+  dialect: mysql
   host: localhost
   database: default
   port: 3306
