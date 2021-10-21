@@ -4,6 +4,8 @@ services:
   api:
     image: rest-api:latest
     container_name: rest-api
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "./entrypoint.sh"]
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,17 +24,19 @@ services:
       retries: 30
 
   db:
-    image: mariadb
+    image: mysql
     container_name: rest-api_db
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - rest-api_data:/var/lib/mysql/:rw
     environment:
-      MARIADB_ROOT_PASSWORD: 1q2w3e4r
-      MARIADB_DATABASE: default
+      MYSQL_ROOT_PASSWORD: 1q2w3e4r
 
   adminer:
     image: adminer:latest
     container_name: rest-api_adminer
+    restart: unless-stopped
     environment:
       ADMINER_DESIGN: konya
     ports:

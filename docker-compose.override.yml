@@ -4,7 +4,6 @@ services:
   api:
     image: rest-api_dev:latest
     container_name: rest-api_dev
-    command: yarn inspect
     build:
       target: build
     volumes:

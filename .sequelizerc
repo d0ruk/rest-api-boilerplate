@@ -1,0 +1,10 @@
+const config = require("config");
+
+const env = config.util.getEnv("NODE_ENV");
+const {
+  database: { host, port, dialect, username, password, database },
+} = config;
+
+module.exports = {
+  url: `${dialect}://${username}:${password}@${host}:${port}/${database}`,
+};

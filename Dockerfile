@@ -12,12 +12,11 @@ FROM node:lts-alpine
 RUN apk add --update curl
 WORKDIR /home/node/app
 
-COPY *.json *.lock ./
+COPY *.json *.lock *.sh .sequelizerc ./
 COPY config/ ./config/
 COPY --from=build /home/node/app/dist .
+
 RUN yarn install --production
 
 USER node
 EXPOSE 3000
-
-CMD ["node", "."]
