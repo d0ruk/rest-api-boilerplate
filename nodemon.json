@@ -2,8 +2,9 @@
   "watch": ["src", "config"],
   "ext": "ts,json,yml",
   "ignore": ["test", ".git", "node_modules/**/node_modules"],
-  "exec": "ts-node -r tsconfig-paths/register --transpile-only src",
+  "exec": "node --inspect=0.0.0.0:9229  -r tsconfig-paths/register -r ts-node/register src",
   "env": {
     "NODE_ENV": "development"
-  }
+  },
+  "signal": "SIGTERM"
 }

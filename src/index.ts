@@ -14,11 +14,12 @@ const { host, port } = config.get("app");
   });
 })();
 
-process.once("SIGUSR2", async () => {
+process.once("SIGTERM", async () => {
   try {
     await sequelize.close();
   } catch (error) {
     logger.emerg(error.message);
-    process.kill(process.pid, "SIGUSR2");
   }
+
+  process.kill(process.pid, "SIGUSR2");
 });

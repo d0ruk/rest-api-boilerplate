@@ -3,7 +3,9 @@ node_modules/
 test/
 jest.config.js
 Dockerfile
-docker-compose.yml
+docker-compose*.yml
 *.http
 *.log
 *.md
+.git
+.dockerignore

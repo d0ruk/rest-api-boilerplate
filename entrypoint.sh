@@ -1,11 +1,13 @@
 #!/bin/sh
 
+[ $NODE_ENV = "development" ] && npx sequelize-cli db:drop
 npx sequelize-cli db:create
 npx sequelize-cli db:migrate
 
 if [ $NODE_ENV = "development" ]; then
+    npx sequelize-cli db:seed:undo:all
     npx sequelize-cli db:seed:all
-    yarn inspect
+    yarn app:dev
     elif [ $NODE_ENV = "production" ]; then
     node .
 else
