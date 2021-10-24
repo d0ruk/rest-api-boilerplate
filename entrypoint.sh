@@ -1,5 +1,7 @@
 #!/bin/sh
 
+npx wait-on tcp:db:3306 && echo "DB ready"
+
 [ $NODE_ENV = "development" ] && npx sequelize-cli db:drop
 npx sequelize-cli db:create
 npx sequelize-cli db:migrate

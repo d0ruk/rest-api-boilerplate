@@ -15,6 +15,7 @@ WORKDIR /home/node/app
 COPY *.json *.lock *.sh .sequelizerc ./
 COPY config/ ./config/
 COPY --from=build /home/node/app/dist .
+COPY --from=build /home/node/app/migrations ./migrations
 
 RUN yarn install --production
 

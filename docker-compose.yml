@@ -15,8 +15,6 @@ services:
     environment:
       NODE_ENV: production
       NODE_PATH: .
-    depends_on:
-      - db
     healthcheck:
       test: ["CMD", "curl", "http://localhost:3000"]
       interval: 1m
@@ -32,6 +30,17 @@ services:
       - rest-api_data:/var/lib/mysql/:rw
     environment:
       MYSQL_ROOT_PASSWORD: 1q2w3e4r
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "--host=127.0.0.1",
+          "--password=$$MYSQL_PASSWORD",
+        ]
+      timeout: 20s
+      retries: 10
 
   adminer:
     image: adminer:latest
