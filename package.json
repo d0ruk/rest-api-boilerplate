@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "docker-compose -f docker-compose.yml up -d",
-    "dev": "docker-compose up -d",
+    "dev": "docker-compose up",
     "app:start": "npm run build && NODE_ENV=production node dist",
     "app:dev": "nodemon",
     "build": "tsc",
@@ -22,6 +22,7 @@
     "lodash": "^4.17.21",
     "mysql2": "^2.3.2",
     "sequelize": "5.22.4",
+    "superstruct": "^0.15.3",
     "winston": "^3.3.3"
   },
   "devDependencies": {

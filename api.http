@@ -8,4 +8,13 @@ GET http://{{host}}
 ###
 GET http://{{host}}/asd
 ###
-GET http://{{host}}/user
+GET http://{{host}}/user?page=1&size=10
+###
+POST http://{{host}}/user
+Content-Type: {{ContentType}}
+
+{
+  "name": "Joe Doe",
+  "password": "password",
+  "email": "asd@asd.com"
+}

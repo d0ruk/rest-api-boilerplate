@@ -32,7 +32,7 @@ export default function (sequelize: Sequelize): typeof UserModel {
       },
       email: {
         type: DataTypes.STRING,
-        unique: true,
+        allowNull: false,
         validate: {
           isEmail: true,
         },
@@ -46,6 +46,12 @@ export default function (sequelize: Sequelize): typeof UserModel {
     {
       tableName: "users",
       sequelize,
+      indexes: [
+        {
+          unique: true,
+          fields: ["email"],
+        },
+      ],
     }
   );
 
