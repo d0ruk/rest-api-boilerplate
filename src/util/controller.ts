@@ -3,8 +3,8 @@ import { NextFunction, Request, Response } from "express";
 export type handlerFn = (req: Request, res: Response) => Promise<any>;
 
 export interface IHandlerContext {
-  req: Request;
-  res: Response;
+  req?: Request;
+  res?: Response;
 }
 
 export const makeController =
