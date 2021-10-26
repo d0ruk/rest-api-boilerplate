@@ -30,6 +30,10 @@ app.use((error: IMyError, req: Request, res: Response, next: NextFunction) => {
     error = errors.badRequest(error.message, error) as IMyError;
   }
 
+  if (error.name === "UnauthorizedError") {
+    error = errors.unauthorized(error.message) as IMyError;
+  }
+
   if (error.isBoom) {
     const {
       output: { statusCode, payload },

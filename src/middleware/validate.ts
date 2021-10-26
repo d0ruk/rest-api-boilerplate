@@ -3,7 +3,7 @@ import { assert, Struct } from "superstruct";
 
 import { errors } from "util/";
 
-export const validate =
+const validateMiddleware =
   (dto: Struct) => (req: Request, res: Response, next: NextFunction) => {
     try {
       assert(req.body, dto);
@@ -14,3 +14,5 @@ export const validate =
       next(errors.badData(message, error));
     }
   };
+
+export default validateMiddleware;

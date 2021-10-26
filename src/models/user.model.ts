@@ -1,10 +1,20 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
+import { Sequelize, DataTypes, Model, FindOptions } from "sequelize";
+import jwt from "jsonwebtoken";
+import config from "config";
+
+import { hashWithSalt } from "util/";
+
+const { secret, options: jwtOptions } = config.get("app.jwt");
 
 export interface IUser {
   id: number;
   name: string;
   password: string;
   email: string;
+
+  hashPassword(password: string): Promise<Array<any>>;
+  comparePassword(password: string): Promise<boolean>;
+  getToken(): Promise<string>;
 }
 
 export class UserModel extends Model implements IUser {
@@ -12,10 +22,39 @@ export class UserModel extends Model implements IUser {
   public name: string;
   public password: string;
   public email: string;
+  public salt: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;
+
+  public static findByEmail(email: string, options: FindOptions = {}) {
+    const opts = Object.assign({}, options, { where: { email } });
+
+    return this.findOne(opts);
+  }
+
+  async hashPassword(password: string): Promise<Array<any>> {
+    return hashWithSalt(password, this.get("salt") as string);
+  }
+
+  async comparePassword(password: string): Promise<boolean> {
+    const [hashed] = await this.hashPassword(password);
+
+    return hashed.toString("hex") === this.password;
+  }
+
+  async getToken(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const { id, email } = this;
+
+      jwt.sign({ id, email }, secret, jwtOptions, (err, result: string) => {
+        if (err) reject(err);
+
+        resolve(result);
+      });
+    });
+  }
 }
 
 export default function (sequelize: Sequelize): typeof UserModel {
@@ -41,6 +80,10 @@ export default function (sequelize: Sequelize): typeof UserModel {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      salt: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
       deleted_at: DataTypes.DATE,
     },
     {
@@ -54,6 +97,15 @@ export default function (sequelize: Sequelize): typeof UserModel {
       ],
     }
   );
+
+  UserModel.addHook("beforeCreate", "beforeUpdate", async (user: UserModel) => {
+    if (user.changed("password")) {
+      const [hash, salt] = await user.hashPassword(user.password);
+      if (salt) user.salt = salt;
+
+      user.password = hash.toString("hex");
+    }
+  });
 
   return UserModel;
 }

@@ -2,14 +2,26 @@
 @port = 3000
 @host = {{hostname}}:{{port}}
 @ContentType = application/json
+@Authorization = Bearer {{login.response.body.token}}
 
-###
 GET http://{{host}}
 ###
 GET http://{{host}}/asd
 ###
-GET http://{{host}}/user?page=1&size=10
+
+# @name login
+POST http://{{host}}/auth
+Content-Type: {{ContentType}}
+
+{
+  "password": "password",
+  "email": "asd@asd.cow"
+}
+
 ###
+GET http://{{host}}/user?page=1&size=10
+Authorization: {{Authorization}}
+### Create user
 POST http://{{host}}/user
 Content-Type: {{ContentType}}
 

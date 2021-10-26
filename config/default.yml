@@ -1,6 +1,15 @@
 app:
   port: 3000
   host: 0.0.0.0
+  jwt:
+    secret: vewyvewysecret
+    options:
+      expiresIn: 12h
+      algorithm: HS512
+  hash:
+    digest: whirlpool
+    iterations: 1000
+    keylen: 64
 database:
   dialect: mysql
   host: localhost
