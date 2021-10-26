@@ -1,5 +1,5 @@
 import { IHandlerContext } from "util/";
-import { UserEntity } from "database";
+import { UserEntity, sequelize } from "database";
 import { UserCreationParams } from "dtos/index";
 
 export default {
@@ -11,8 +11,12 @@ export default {
   async create(this: IHandlerContext): Promise<void> {
     const data: UserCreationParams = this.req!.body;
 
-    const created = await UserEntity.create(data);
+    const user = await sequelize.transaction(async transaction => {
+      const created = await UserEntity.create(data, { transaction });
 
-    this.res!.status(201).json(created);
+      return await UserEntity.findByEmail(created.email, { transaction });
+    });
+
+    this.res!.status(201).json(user);
   },
 };

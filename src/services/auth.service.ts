@@ -5,7 +5,7 @@ export default {
   async login(this: IHandlerContext) {
     const { email, password } = this.req!.body;
 
-    const user = await UserEntity.findByEmail(email);
+    const user = await UserEntity.scope("all").findByEmail(email);
 
     if (!user) throw errors.notFound("User not found");
 

@@ -95,6 +95,14 @@ export default function (sequelize: Sequelize): typeof UserModel {
           fields: ["email"],
         },
       ],
+      defaultScope: {
+        attributes: ["name", "email"],
+      },
+      scopes: {
+        all: {
+          include: [{ all: true }],
+        },
+      },
     }
   );
 
