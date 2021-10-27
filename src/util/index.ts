@@ -1,7 +1,9 @@
 import Boom, { Boom as BoomClass } from "@hapi/boom";
-import { ValidationError, CommonErrorProperties } from "sequelize";
+import { ValidationError, CommonErrorProperties, Model } from "sequelize";
 import { randomBytes, pbkdf2, BinaryLike } from "crypto";
 import config from "config";
+
+import { IPagination } from "dtos/";
 
 const { digest, iterations, keylen } = config.get("app.hash");
 
@@ -32,4 +34,21 @@ export const hashWithSalt = async (
       resolve([result, salt]);
     });
   });
+};
+
+export const addPaginationData = (
+  data: { rows: Model[]; count: number },
+  query: IPagination
+) => {
+  const { page = 0, size = 20 } = query;
+  const { count, rows } = data;
+  const totalPages = Math.ceil(count / size);
+
+  return { totalItems: count, totalPages, page, rows };
+};
+
+export const getPaginationParams = (query: IPagination) => {
+  const { page = 1, size = 20 } = query;
+
+  return { limit: size, offset: (page - 1) * size };
 };

@@ -1,12 +1,14 @@
-import { IHandlerContext } from "util/";
+import { IHandlerContext, addPaginationData, getPaginationParams } from "util/";
 import { UserEntity, sequelize } from "database";
 import { UserCreationParams } from "dtos/index";
 
 export default {
   async findAll(this: IHandlerContext): Promise<void> {
-    const users = await UserEntity.findAll();
+    const { limit, offset } = getPaginationParams(this.req!.query);
+    const users = await UserEntity.findAndCountAll({ limit, offset });
+    const result = addPaginationData(users, this.req!.query);
 
-    this.res!.status(200).json(users);
+    this.res!.status(200).json(result);
   },
   async create(this: IHandlerContext): Promise<void> {
     const data: UserCreationParams = this.req!.body;

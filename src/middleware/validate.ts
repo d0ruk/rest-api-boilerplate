@@ -1,12 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { assert, Struct } from "superstruct";
+import { Struct, create } from "superstruct";
+import { ParsedQs } from "qs";
 
 import { errors } from "util/";
 
 const validateMiddleware =
-  (dto: Struct) => (req: Request, res: Response, next: NextFunction) => {
+  (dto: Struct, isQuery = false) =>
+  (req: Request, res: Response, next: NextFunction) => {
     try {
-      assert(req.body, dto);
+      if (isQuery) {
+        req.query = create(req.query, dto) as ParsedQs;
+      } else {
+        req.body = create(req.body, dto);
+      }
       return next();
     } catch (error) {
       const message = `.${error.path.join(".")} should be ${error.type}`;
