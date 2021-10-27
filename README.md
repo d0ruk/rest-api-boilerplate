@@ -1,6 +1,6 @@
 # REST API boilerplate
 
-A Typescript/Express REST API with MySQL. 
+A Typescript/Express REST API with MySQL.
 
 You can develop in a Docker container or locally.
 
@@ -10,7 +10,7 @@ You can develop in a Docker container or locally.
 yarn
 ```
 
-Make sure you have an instance of MySQL running on `localhost`, and edit the `$NODE_ENV.yml` files in `config/`.
+Make sure you have an instance of MySQL running on `localhost`, and edit the a `$NODE_ENV.yml` files in `config/`.
 
 - **yarn app:start** - build app & run in production mode
 - **yarn app:dev** - watch app in development mode
