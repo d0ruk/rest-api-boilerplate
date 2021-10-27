@@ -20,9 +20,11 @@ Content-Type: {{ContentType}}
 }
 
 ###
+# @name list-users
 GET http://{{host}}/user?page=1&size=10
 Authorization: {{Authorization}}
-### Create user
+###
+# @name create-user
 POST http://{{host}}/user
 Content-Type: {{ContentType}}
 

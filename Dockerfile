@@ -1,4 +1,4 @@
-FROM node:lts as build
+FROM node:16 as build
 
 WORKDIR /home/node/app
 
@@ -7,7 +7,7 @@ COPY . .
 RUN yarn install --non-interactive --pure-lockfile
 RUN yarn build
 
-FROM node:lts-alpine
+FROM node:16-alpine
 
 RUN apk add --update curl
 WORKDIR /home/node/app

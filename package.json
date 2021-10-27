@@ -46,7 +46,7 @@
     "tsconfig-paths": "^3.11.0",
     "typescript": "^4.4.4"
   },
-  "main": "dist",
+  "main": ".",
   "keywords": [
     "typescript",
     "docker",

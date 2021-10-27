@@ -32,7 +32,7 @@ const authMiddleware = ({ skip }: IAuthMiddleware = { skip: [] }) => [
     if (email) {
       const user = await UserEntity.findByEmail(email);
 
-      if (!user) throw errors.notFound("User not found");
+      if (!user) return next(errors.notFound("User not found"));
 
       req.user = user;
     }
