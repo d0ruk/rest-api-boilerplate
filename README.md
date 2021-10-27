@@ -1,5 +1,7 @@
 # REST API boilerplate
 
+A Typescript/Express REST API with MySQL. 
+
 You can develop in a Docker container or locally.
 
 ### **Local**
@@ -8,7 +10,7 @@ You can develop in a Docker container or locally.
 yarn
 ```
 
-Make sure you have an instance of MariaDB running on `localhost`, and edit the `local.yml` file.
+Make sure you have an instance of MySQL running on `localhost`, and edit the `$NODE_ENV.yml` files in `config/`.
 
 - **yarn app:start** - build app & run in production mode
 - **yarn app:dev** - watch app in development mode
