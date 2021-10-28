@@ -84,7 +84,7 @@ export default function (sequelize: Sequelize): typeof UserModel {
         allowNull: true,
         type: DataTypes.STRING,
       },
-      deleted_at: DataTypes.DATE,
+      deletedAt: DataTypes.DATE,
     },
     {
       tableName: "users",
@@ -101,6 +101,17 @@ export default function (sequelize: Sequelize): typeof UserModel {
       scopes: {
         all: {
           include: [{ all: true }],
+        },
+        detail: {
+          attributes: {
+            exclude: [
+              "password",
+              "salt",
+              "createdAt",
+              "updatedAt",
+              "deletedAt",
+            ],
+          },
         },
       },
     }

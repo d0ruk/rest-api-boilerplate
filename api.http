@@ -21,7 +21,7 @@ Content-Type: {{ContentType}}
 
 ###
 # @name list-users
-GET http://{{host}}/user?page=1&size=10
+GET http://{{host}}/user?page=34&size=3
 Authorization: {{Authorization}}
 ###
 # @name create-user
@@ -33,3 +33,8 @@ Content-Type: {{ContentType}}
   "password": "password",
   "email": "asd@asd.com"
 }
+###
+# @name get-user
+GET http://{{host}}/user/101
+Authorization: {{Authorization}}
+###

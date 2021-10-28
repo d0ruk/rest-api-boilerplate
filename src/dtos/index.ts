@@ -22,3 +22,11 @@ export const PaginationQueryDto: Describe<IPagination> = object({
   page: optional(min(NumberString, 1)),
   size: optional(NumberString),
 });
+
+export interface IFindOneParam {
+  id: number;
+}
+
+export const FindOneParamDto: Describe<IFindOneParam> = object({
+  id: min(NumberString, 1),
+});
