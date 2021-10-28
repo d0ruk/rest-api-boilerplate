@@ -1,6 +1,6 @@
+import { randomBytes, pbkdf2, BinaryLike } from "node:crypto";
 import Boom, { Boom as BoomClass } from "@hapi/boom";
 import { ValidationError, CommonErrorProperties, Model } from "sequelize";
-import { randomBytes, pbkdf2, BinaryLike } from "crypto";
 import config from "config";
 
 import { IPagination } from "dtos/";
@@ -40,7 +40,7 @@ export const addPaginationData = (
   data: { rows: Model[]; count: number },
   query: IPagination
 ) => {
-  const { page = 0, size = 20 } = query;
+  const { page = 1, size = 20 } = query;
   const { count, rows } = data;
   const totalPages = Math.ceil(count / size);
 
