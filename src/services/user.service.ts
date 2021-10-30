@@ -5,7 +5,7 @@ import {
   errors,
 } from "util/";
 import { UserEntity, sequelize } from "database";
-import { UserCreationParams } from "dtos/index";
+import { UserCreationParams, UserUpdateParams } from "dtos/index";
 
 export default {
   async findAll(this: IHandlerContext): Promise<void> {
@@ -34,5 +34,20 @@ export default {
     });
 
     this.res!.status(201).json(user);
+  },
+  async update(this: IHandlerContext): Promise<void> {
+    const data: UserUpdateParams = this.req!.body;
+    const { id } = this.req!.params;
+
+    const [updated] = await UserEntity.update(data, { where: { id } });
+
+    this.res!.status(200).json({ updated });
+  },
+  async delete(this: IHandlerContext): Promise<void> {
+    const { id } = this.req!.params;
+
+    const deleted = await UserEntity.destroy({ where: { id } });
+
+    this.res!.status(200).json({ deleted });
   },
 };

@@ -1,7 +1,12 @@
 import { Router } from "express";
 
 import { makeController } from "util/";
-import { UserCreateDto, PaginationQueryDto, FindOneParamDto } from "dtos/";
+import {
+  UserCreateDto,
+  UserUpdateDto,
+  PaginationQueryDto,
+  FindOneParamDto,
+} from "dtos/";
 import { validate, auth } from "middleware/";
 import service from "services/user.service";
 
@@ -22,6 +27,17 @@ router.get(
   "/:id",
   validate(FindOneParamDto, { isParam: true }),
   makeController(service.findOne)
+);
+router.post(
+  "/:id",
+  validate(FindOneParamDto, { isParam: true }),
+  validate(UserUpdateDto),
+  makeController(service.update)
+);
+router.delete(
+  "/:id",
+  validate(FindOneParamDto, { isParam: true }),
+  makeController(service.delete)
 );
 
 export default router;

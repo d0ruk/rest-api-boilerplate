@@ -35,6 +35,19 @@ Content-Type: {{ContentType}}
 }
 ###
 # @name get-user
-GET http://{{host}}/user/101
+GET http://{{host}}/user/103
+Authorization: {{Authorization}}
+###
+# @name update-user
+POST http://{{host}}/user/103
+Authorization: {{Authorization}}
+Content-Type: {{ContentType}}
+
+{
+  "name": "Another Name"
+}
+###
+# @name delete-user
+DELETE  http://{{host}}/user/105
 Authorization: {{Authorization}}
 ###
