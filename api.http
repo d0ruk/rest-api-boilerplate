@@ -1,7 +1,7 @@
 # https://marketplace.visualstudio.com/items?itemName=humao.rest-client
 @hostname = localhost
 @port = 3000
-@host = {{hostname}}:{{port}}
+@host = {{hostname}}:{{port}}/v1
 @ContentType = application/json
 @Authorization = Bearer {{login.response.body.token}}
 

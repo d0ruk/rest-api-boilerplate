@@ -1,54 +1,37 @@
-import express, { Response, Request, NextFunction } from "express";
+import express, { Response, Request, NextFunction, Router } from "express";
 import expressWinston from "express-winston";
-import { ValidationError } from "sequelize";
 
 import routes from "routes/";
-import { logger, errors, IMyError } from "util/";
+import { logger, errors } from "util/";
+import { errorMiddleware } from "middleware/";
 
-const isProd = process.env.NODE_ENV === "production";
-export const app: express.Application = express();
+const app: express.Application = express();
+const v1Route = Router();
 
 app.use(express.json());
 app.use(
-  expressWinston.logger({ winstonInstance: logger, expressFormat: true })
+  expressWinston.logger({
+    winstonInstance: logger,
+    expressFormat: true,
+    ignoredRoutes: ["/"],
+  })
 );
 
 for (const [path, router] of Object.entries(routes)) {
-  app.use(path, router);
+  v1Route.use(path, router);
 }
+// v1Route.use(acl.authorize.unless({ path: ["/"] }));
+// v1Route.use(acl.middleware());
+
+app.get("/", (_, res: Response) => {
+  res.status(200).end();
+});
+app.use("/v1", v1Route);
 
 app.use(() => {
   throw errors.notFound("Route not found");
 });
 
-app.use((error: IMyError, req: Request, res: Response, next: NextFunction) => {
-  if (error instanceof ValidationError) {
-    error = errors.badData(error.original.message, error) as IMyError;
-  }
+app.use(errorMiddleware());
 
-  if (error instanceof SyntaxError) {
-    error = errors.badRequest(error.message, error) as IMyError;
-  }
-
-  if (error.name === "UnauthorizedError") {
-    error = errors.unauthorized(error.message) as IMyError;
-  }
-
-  if (error.isBoom) {
-    const {
-      output: { statusCode, payload },
-      data,
-    } = error;
-
-    res
-      .status(statusCode)
-      .json(Object.assign({ ...payload }, !isProd && { data }));
-  } else {
-    const {
-      output: { statusCode, payload },
-    } = errors.internal("Oops");
-
-    res.status(statusCode).json(payload);
-    logger.error(error.message);
-  }
-});
+export default app;
