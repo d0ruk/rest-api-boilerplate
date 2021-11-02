@@ -3,6 +3,7 @@ import config from "config";
 import { app } from "app";
 import { sequelize } from "database";
 import { logger } from "util/";
+import "workers/";
 
 const { host, port } = config.get("app");
 

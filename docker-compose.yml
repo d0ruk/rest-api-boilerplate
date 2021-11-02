@@ -51,5 +51,22 @@ services:
     ports:
       - 8888:8080
 
+  redis:
+    image: redis:latest
+    container_name: rest-api_redis
+    restart: always
+    command: redis-server --save 60 1 --loglevel warning
+    ports:
+      - 6379:6379
+    volumes:
+      - rest-api_redis:/data:rw
+    healthcheck:
+      test: redis-cli ping
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
 volumes:
   rest-api_data:
+  rest-api_redis:

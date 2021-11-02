@@ -1,11 +1,15 @@
+import * as util from "node:util";
+
 import {
   IHandlerContext,
   addPaginationData,
   getPaginationParams,
   errors,
+  logger,
 } from "util/";
 import { UserEntity, sequelize } from "database";
 import { UserCreationParams, UserUpdateParams } from "dtos/index";
+import { createMailJob } from "queue";
 
 export default {
   async findAll(this: IHandlerContext): Promise<void> {
@@ -34,6 +38,12 @@ export default {
     });
 
     this.res!.status(201).json(user);
+
+    const job = createMailJob({ to: user?.email });
+
+    job.on("succeeded", () => {
+      logger.info(util.format("Welcome e-mail sent to %s", user?.email));
+    });
   },
   async update(this: IHandlerContext): Promise<void> {
     const data: UserUpdateParams = this.req!.body;
