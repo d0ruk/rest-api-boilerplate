@@ -16,6 +16,10 @@ mailQueue.on("error", err => {
   logger.error(util.format("Mail queue error %O", err));
 });
 
+export const closeQueues = async () => {
+  await mailQueue.close();
+};
+
 export interface ICreateMailJob {
   to: string;
 }

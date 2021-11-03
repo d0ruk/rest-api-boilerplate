@@ -4,6 +4,7 @@ import app from "app";
 import { sequelize } from "database";
 import { logger } from "util/";
 import "workers/";
+import { closeQueues } from "queue";
 
 const { host, port } = config.get("app");
 
@@ -18,6 +19,7 @@ const { host, port } = config.get("app");
 process.once("SIGTERM", async () => {
   try {
     await sequelize.close();
+    await closeQueues();
   } catch (error) {
     logger.emerg(error.message);
   }
