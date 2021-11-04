@@ -5,7 +5,6 @@ import {
   addPaginationData,
   getPaginationParams,
   errors,
-  logger,
 } from "util/";
 import { UserEntity, sequelize } from "database";
 import { UserCreationParams, UserUpdateParams } from "dtos/index";
@@ -39,11 +38,14 @@ export default {
 
     this.res!.status(201).json(user);
 
-    const job = createMailJob({ to: user?.email });
-
-    job.on("succeeded", () => {
-      logger.info(util.format("Welcome e-mail sent to %s", user?.email));
-    });
+    try {
+      createMailJob(
+        { to: user?.email, template: "welcome" },
+        { name: user?.name }
+      );
+    } catch (error) {
+      throw error;
+    }
   },
   async update(this: IHandlerContext): Promise<void> {
     const data: UserUpdateParams = this.req!.body;

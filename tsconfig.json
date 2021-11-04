@@ -8,7 +8,8 @@
     "moduleResolution": "node",
     "lib": [
       "es2017",
-      "esnext.asynciterable"
+      "esnext.asynciterable",
+      "DOM"
     ],
     "typeRoots": [
       "./types",

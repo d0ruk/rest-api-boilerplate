@@ -13,6 +13,9 @@ app:
 redis:
   host: redis
   port: 6379
+mailgun:
+  domain: <https://app.mailgun.com/app/sending/domains>
+  apiKey: <https://app.mailgun.com/app/account/security/api_keys>
 database:
   dialect: mysql
   host: localhost
