@@ -62,7 +62,7 @@
     "express",
     "sequelize"
   ],
-  "description": "A Typescript/Express REST API with MySQL",
+  "description": "A Typescript/Express.js REST API with MySQL and Redis",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/d0ruk/rest-api-boilerplate.git"
