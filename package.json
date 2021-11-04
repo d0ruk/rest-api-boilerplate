@@ -1,6 +1,6 @@
 {
   "name": "rest-api-boilerplate",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "docker-compose -f docker-compose.yml up",
