@@ -14,7 +14,10 @@ const router: Router = Router();
 
 router.use(
   auth({
-    skip: [{ url: "/", method: "POST" }],
+    skip: [
+      { url: "/", method: "POST" },
+      { url: "/", method: "GET" },
+    ],
   })
 );
 router.get(

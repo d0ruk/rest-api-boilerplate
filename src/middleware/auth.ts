@@ -4,7 +4,7 @@ import jwt from "express-jwt";
 import config from "config";
 
 import { UserEntity } from "database";
-import { errors } from "util/";
+import { errors, defineAbilityFor } from "util/";
 
 const { secret, options: jwtOptions } = config.get("app.jwt");
 
@@ -30,13 +30,17 @@ const authMiddleware = ({ skip }: IAuthMiddleware = { skip: [] }) => [
     const email = req.user?.email;
 
     if (email) {
-      const user = await UserEntity.findByEmail(email);
+      const user = await UserEntity.scope("all").findByEmail(email);
 
       if (!user) return next(errors.notFound("Bearer not found"));
 
       req.user = user;
     }
 
+    next();
+  },
+  async (req: Request, res: Response, next: NextFunction) => {
+    req.ability = defineAbilityFor(req.user);
     next();
   },
 ];

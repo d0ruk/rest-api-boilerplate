@@ -20,8 +20,6 @@ app.use(
 for (const [path, router] of Object.entries(routes)) {
   v1Route.use(path, router);
 }
-// v1Route.use(acl.authorize.unless({ path: ["/"] }));
-// v1Route.use(acl.middleware());
 
 app.get("/", (_, res: Response) => {
   res.status(200).end();

@@ -2,7 +2,7 @@ import { Sequelize, DataTypes, Model, FindOptions } from "sequelize";
 import jwt from "jsonwebtoken";
 import config from "config";
 
-import { hashWithSalt } from "util/";
+import { hashWithSalt, UserRoles } from "util/";
 
 const { secret, options: jwtOptions } = config.get("app.jwt");
 
@@ -23,6 +23,7 @@ export class UserModel extends Model implements IUser {
   public password: string;
   public email: string;
   public salt: string;
+  public role: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -84,6 +85,11 @@ export default function (sequelize: Sequelize): typeof UserModel {
         allowNull: true,
         type: DataTypes.STRING,
       },
+      role: {
+        allowNull: false,
+        type: DataTypes.TINYINT,
+        defaultValue: UserRoles.user,
+      },
       deletedAt: DataTypes.DATE,
     },
     {
@@ -107,6 +113,7 @@ export default function (sequelize: Sequelize): typeof UserModel {
             exclude: [
               "password",
               "salt",
+              "role",
               "createdAt",
               "updatedAt",
               "deletedAt",

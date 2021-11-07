@@ -9,6 +9,12 @@ const { digest, iterations, keylen } = config.get("app.hash");
 
 export * from "./logger";
 export * from "./controller";
+export * from "./abilities";
+
+export enum UserRoles {
+  "admin",
+  "user",
+}
 
 export interface IMyError
   extends BoomClass,
@@ -21,6 +27,7 @@ export const errors = {
   badData: (msg: string, data?: any) => Boom.badData(msg, data),
   badRequest: (msg: string, data?: any) => Boom.badRequest(msg, data),
   unauthorized: (msg: string) => Boom.unauthorized(msg),
+  forbidden: (msg: string, data?: any) => Boom.forbidden(msg, data),
 };
 
 export const hashWithSalt = async (

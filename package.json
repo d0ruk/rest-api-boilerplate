@@ -13,6 +13,7 @@
   "author": "Doruk Kutlu",
   "license": "MIT",
   "dependencies": {
+    "@casl/ability": "^5.4.3",
     "@hapi/boom": "^9.1.4",
     "bee-queue": "^1.4.0",
     "config": "^3.3.6",
