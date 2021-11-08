@@ -14,7 +14,13 @@ const validateMiddleware =
       } else if (isParam) {
         req.params = create(req.params, dto) as ParamsDictionary;
       } else {
-        req.body = create(req.body, dto);
+        const valid = create(req.body, dto) as Record<string, any>;
+
+        for (const [k, v] of Object.entries(valid)) {
+          if (typeof v === "undefined") delete valid[k];
+        }
+
+        req.body = valid;
       }
       return next();
     } catch (error) {
