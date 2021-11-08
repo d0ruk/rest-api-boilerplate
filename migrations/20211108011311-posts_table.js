@@ -1,14 +1,15 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("posts", {
       id: {
-        type: Sequelize.INTEGER,
         primaryKey: true,
+        type: Sequelize.INTEGER,
         autoIncrement: true,
       },
-      name: Sequelize.STRING,
-      email: Sequelize.STRING,
-      password: Sequelize.STRING,
+      title: Sequelize.STRING,
+      body: Sequelize.TEXT,
+      slug: Sequelize.STRING,
+      published: Sequelize.BOOLEAN,
       created_at: {
         type: Sequelize.DATE(3),
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)"),
@@ -24,6 +25,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("posts");
   },
 };

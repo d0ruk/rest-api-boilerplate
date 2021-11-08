@@ -10,6 +10,7 @@ import {
 
 export * from "./user.dto";
 export * from "./auth.dto";
+export * from "./post.dto";
 
 const NumberString = coerce(number(), string(), value => parseFloat(value));
 

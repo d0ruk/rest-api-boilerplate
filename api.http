@@ -48,6 +48,39 @@ Content-Type: {{ContentType}}
 }
 ###
 # @name delete-user
-DELETE  http://{{host}}/user/105
+DELETE  http://{{host}}/user/1
+Authorization: {{Authorization}}
+###
+
+# @name list-posts
+GET http://{{host}}/post
+Authorization: {{Authorization}}
+###
+# @name create-post
+POST http://{{host}}/post
+Authorization: {{Authorization}}
+Content-Type: {{ContentType}}
+
+{
+  "title": "First title",
+  "body": "First body"
+}
+###
+# @name get-post
+GET http://{{host}}/post/1
+Authorization: {{Authorization}}
+###
+# @name update-post
+POST http://{{host}}/post/1
+Authorization: {{Authorization}}
+Content-Type: {{ContentType}}
+
+{
+  "title": "Another Title",
+  "published": true
+}
+###
+# @name delete-post
+DELETE  http://{{host}}/post/1
 Authorization: {{Authorization}}
 ###
