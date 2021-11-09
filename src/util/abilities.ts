@@ -4,7 +4,7 @@ import { UserModel } from "models/user.model";
 import { UserRoles } from ".";
 
 type Actions = "list" | "create" | "read" | "update" | "delete" | "manage";
-type Subjects = "UserModel" | "all";
+type Subjects = "UserModel" | "PostModel" | "all";
 
 type AppAbility = Ability<[Actions, Subjects]>;
 type AppAbilityBuilder = AbilityBuilder<AppAbility>;
@@ -51,6 +51,9 @@ function defineUserRules({ can }: AppAbilityBuilder, user: UserModel) {
   // @ts-ignore-next-line
   can(["delete", "update"], "UserModel", { id: user.id });
   can("read", "UserModel");
+  // @ts-ignore-next-line
+  can(["delete", "update", "read"], "PostModel", { authorId: user.id });
+  can(["list", "create"], "PostModel");
 }
 
 function defineAnonymousRules({ can }: AbilityBuilder<Ability>) {

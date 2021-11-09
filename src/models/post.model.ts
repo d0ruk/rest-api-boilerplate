@@ -75,7 +75,6 @@ export default function (sequelize: Sequelize): typeof PostModel {
         detail: {
           attributes: {
             exclude: [
-              "authorId",
               "published",
               "slug",
               "createdAt",

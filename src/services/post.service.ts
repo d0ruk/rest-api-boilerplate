@@ -11,6 +11,7 @@ import { PostCreationParams, PostUpdateParams } from "dtos/index";
 
 export default {
   async findAll(this: IHandlerContext): Promise<void> {
+    ForbiddenError.from(this.req!.ability).throwUnlessCan("list", "PostModel");
 
     const { limit, offset } = getPaginationParams(this.req!.query);
     const posts = await PostEntity.findAndCountAll({ limit, offset });
@@ -23,10 +24,16 @@ export default {
     const post = await PostEntity.scope("detail").findByPk(id);
 
     if (!post) throw errors.notFound("Post not found");
+    ForbiddenError.from(this.req!.ability).throwUnlessCan("read", post);
 
     this.res!.status(200).json(post);
   },
   async create(this: IHandlerContext): Promise<void> {
+    ForbiddenError.from(this.req!.ability).throwUnlessCan(
+      "create",
+      "PostModel"
+    );
+
     const data: PostCreationParams = this.req!.body;
     const toCreate = Object.assign(data, { authorId: this.req!.user?.id });
     const post = await sequelize.transaction(async transaction => {
@@ -47,6 +54,7 @@ export default {
     const post = await PostEntity.scope("detail").findByPk(id);
 
     if (!post) throw errors.notFound("Post not found");
+    ForbiddenError.from(this.req!.ability).throwUnlessCan("update", post);
 
     post.set(data);
     await post.save();
@@ -58,6 +66,7 @@ export default {
     const post = await PostEntity.scope("detail").findByPk(id);
 
     if (!post) throw errors.notFound("Post not found");
+    ForbiddenError.from(this.req!.ability).throwUnlessCan("delete", post);
 
     await post.destroy();
 
