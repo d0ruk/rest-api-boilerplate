@@ -4,6 +4,7 @@ import expressWinston from "express-winston";
 import routes from "routes/";
 import { logger, errors } from "util/";
 import { errorMiddleware } from "middleware/";
+import { sequelize } from "database";
 
 const app: express.Application = express();
 const v1Route = Router();
@@ -21,7 +22,8 @@ for (const [path, router] of Object.entries(routes)) {
   v1Route.use(path, router);
 }
 
-app.get("/", (_, res: Response) => {
+app.get("/", async (_, res: Response) => {
+  await sequelize.authenticate();
   res.status(200).end();
 });
 app.use("/v1", v1Route);
