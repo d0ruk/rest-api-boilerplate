@@ -21,12 +21,11 @@ export default {
     this.res!.status(200).json(result);
   },
   async findOne(this: IHandlerContext): Promise<void> {
-    ForbiddenError.from(this.req!.ability).throwUnlessCan("read", "UserModel");
-
     const { id } = this.req!.params;
     const user = await UserEntity.scope("detail").findByPk(id);
 
     if (!user) throw errors.notFound("User not found");
+    ForbiddenError.from(this.req!.ability).throwUnlessCan("read", user);
 
     this.res!.status(200).json(user);
   },

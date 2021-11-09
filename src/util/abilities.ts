@@ -49,8 +49,7 @@ function defineAdminRules({ can }: AppAbilityBuilder) {
 
 function defineUserRules({ can }: AppAbilityBuilder, user: UserModel) {
   // @ts-ignore-next-line
-  can(["delete", "update"], "UserModel", { id: user.id });
-  can("read", "UserModel");
+  can(["read", "delete", "update"], "UserModel", { id: user.id });
   // @ts-ignore-next-line
   can(["delete", "update", "read"], "PostModel", { authorId: user.id });
   can(["list", "create"], "PostModel");
