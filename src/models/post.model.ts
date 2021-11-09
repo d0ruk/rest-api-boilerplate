@@ -1,5 +1,7 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
-import slugify from "slugify";
+
+import { UserModel } from "./user.model";
+import { getSlug } from "util/";
 
 export interface IPost {
   id: number;
@@ -46,10 +48,19 @@ export default function (sequelize: Sequelize): typeof PostModel {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      authorId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
       deletedAt: DataTypes.DATE,
     },
     {
       tableName: "posts",
+      indexes: [
+        {
+          fields: ["author_id"],
+        },
+      ],
       sequelize,
       defaultScope: {
         attributes: ["title"],
@@ -64,6 +75,7 @@ export default function (sequelize: Sequelize): typeof PostModel {
         detail: {
           attributes: {
             exclude: [
+              "authorId",
               "published",
               "slug",
               "createdAt",
@@ -78,14 +90,13 @@ export default function (sequelize: Sequelize): typeof PostModel {
 
   PostModel.addHook("beforeValidate", async (post: PostModel) => {
     if (post.changed("title")) {
-      const slug = slugify(post.title, {
-        strict: true,
-        locale: "en",
-      });
+      const slug = getSlug(post.get("title"));
 
-      post.slug = slug;
+      post.set({ slug });
     }
   });
+
+  PostModel.belongsTo(UserModel, { as: "author" });
 
   return PostModel;
 }

@@ -28,8 +28,9 @@ export default {
   },
   async create(this: IHandlerContext): Promise<void> {
     const data: PostCreationParams = this.req!.body;
+    const toCreate = Object.assign(data, { authorId: this.req!.user?.id });
     const post = await sequelize.transaction(async transaction => {
-      const created = await PostEntity.create(data, {
+      const created = await PostEntity.create(toCreate, {
         transaction,
       });
 

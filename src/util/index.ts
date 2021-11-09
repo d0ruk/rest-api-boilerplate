@@ -2,6 +2,7 @@ import { randomBytes, pbkdf2, BinaryLike } from "node:crypto";
 import Boom, { Boom as BoomClass } from "@hapi/boom";
 import { ValidationError, CommonErrorProperties, Model } from "sequelize";
 import config from "config";
+import slugify from "slugify";
 
 import { IPagination } from "dtos/";
 
@@ -58,4 +59,11 @@ export const getPaginationParams = (query: IPagination) => {
   const { page = 1, size = 20 } = query;
 
   return { limit: size, offset: (page - 1) * size };
+};
+
+export const getSlug = (string: string): string => {
+  return slugify(string, {
+    strict: true,
+    locale: "en",
+  });
 };
