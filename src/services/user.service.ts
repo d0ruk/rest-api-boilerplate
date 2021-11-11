@@ -6,7 +6,7 @@ import {
   getPaginationParams,
   errors,
 } from "util/";
-import { UserEntity, sequelize } from "database";
+import { UserEntity, PostEntity, sequelize } from "database";
 import { UserCreationParams, UserUpdateParams } from "dtos/index";
 import { createMailJob } from "queue";
 
@@ -22,7 +22,15 @@ export default {
   },
   async findOne(this: IHandlerContext): Promise<void> {
     const { id } = this.req!.params;
-    const user = await UserEntity.scope("detail").findByPk(id);
+    const user = await UserEntity.scope("detail").findByPk(id, {
+      include: [
+        {
+          model: PostEntity.scope("detail"),
+          required: false,
+          as: "posts",
+        },
+      ],
+    });
 
     if (!user) throw errors.notFound("User not found");
     ForbiddenError.from(this.req!.ability).throwUnlessCan("read", user);

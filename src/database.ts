@@ -19,3 +19,6 @@ sequelize.authenticate();
 
 export const UserEntity = User(sequelize);
 export const PostEntity = Post(sequelize);
+
+PostEntity.belongsTo(UserEntity, { as: "author", foreignKey: "authorId" });
+UserEntity.hasMany(PostEntity, { as: "posts", foreignKey: "authorId" });

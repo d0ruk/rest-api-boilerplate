@@ -21,7 +21,7 @@ export default {
   },
   async findOne(this: IHandlerContext): Promise<void> {
     const { id } = this.req!.params;
-    const post = await PostEntity.scope("detail").findByPk(id);
+    const post = await PostEntity.scope(["withAuthor", "detail"]).findByPk(id);
 
     if (!post) throw errors.notFound("Post not found");
     ForbiddenError.from(this.req!.ability).throwUnlessCan("read", post);

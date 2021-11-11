@@ -106,7 +106,7 @@ export default function (sequelize: Sequelize): typeof UserModel {
       },
       scopes: {
         all: {
-          include: [{ all: true }],
+          include: [{ all: true, required: false }],
         },
         detail: {
           attributes: {

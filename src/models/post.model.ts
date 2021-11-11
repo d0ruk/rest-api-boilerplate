@@ -72,6 +72,9 @@ export default function (sequelize: Sequelize): typeof PostModel {
         all: {
           include: [{ all: true }],
         },
+        withAuthor: {
+          include: [{ model: UserModel, as: "author" }],
+        },
         detail: {
           attributes: {
             exclude: [
@@ -94,8 +97,6 @@ export default function (sequelize: Sequelize): typeof PostModel {
       post.set({ slug });
     }
   });
-
-  PostModel.belongsTo(UserModel, { as: "author" });
 
   return PostModel;
 }
