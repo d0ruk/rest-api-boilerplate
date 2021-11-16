@@ -6,7 +6,7 @@ import {
   getPaginationParams,
   errors,
 } from "util/";
-import { UserEntity, PostEntity, sequelize } from "database";
+import { UserEntity, PostEntity, sequelize, TagEntity } from "database";
 import { UserCreationParams, UserUpdateParams } from "dtos/index";
 import { createMailJob } from "queue";
 
@@ -28,6 +28,14 @@ export default {
           model: PostEntity.scope("detail"),
           required: false,
           as: "posts",
+          include: [
+            {
+              model: TagEntity.scope("detail"),
+              required: false,
+              as: "tags",
+              through: { attributes: [] },
+            },
+          ],
         },
       ],
     });

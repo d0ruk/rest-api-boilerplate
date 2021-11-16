@@ -2,14 +2,13 @@ import { Router } from "express";
 
 import { makeController } from "util/";
 import {
-  PostCreateDto,
-  PostUpdateDto,
-  PostTagsDto,
+  TagCreateDto,
+  TagUpdateDto,
   PaginationQueryDto,
   FindOneParamDto,
 } from "dtos/";
 import { validate, auth } from "middleware/";
-import service from "services/post.service";
+import service from "services/tag.service";
 
 const router: Router = Router();
 
@@ -19,7 +18,7 @@ router.get(
   validate(PaginationQueryDto, { isQuery: true }),
   makeController(service.findAll)
 );
-router.post("/", validate(PostCreateDto), makeController(service.create));
+router.post("/", validate(TagCreateDto), makeController(service.create));
 router.get(
   "/:id",
   validate(FindOneParamDto, { isParam: true }),
@@ -28,25 +27,13 @@ router.get(
 router.post(
   "/:id",
   validate(FindOneParamDto, { isParam: true }),
-  validate(PostUpdateDto),
+  validate(TagUpdateDto),
   makeController(service.update)
 );
 router.delete(
   "/:id",
   validate(FindOneParamDto, { isParam: true }),
   makeController(service.delete)
-);
-router.post(
-  "/:id/tag",
-  validate(FindOneParamDto, { isParam: true }),
-  validate(PostTagsDto),
-  makeController(service.addTags)
-);
-router.post(
-  "/:id/untag",
-  validate(FindOneParamDto, { isParam: true }),
-  validate(PostTagsDto),
-  makeController(service.removeTags)
 );
 
 export default router;

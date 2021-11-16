@@ -67,3 +67,14 @@ export const getSlug = (string: string): string => {
     locale: "en",
   });
 };
+
+export const filterAsync = async (
+  array: any[],
+  callback: (value: any, index: number) => Promise<boolean>
+): Promise<any[]> => {
+  const results: boolean[] = await Promise.all(
+    array.map((value, index) => callback(value, index))
+  );
+
+  return array.filter((_, i) => results[i]);
+};

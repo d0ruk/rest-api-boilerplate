@@ -21,8 +21,7 @@ Content-Type: {{ContentType}}
 
 ###
 # @name list-users
-GET http://{{host}}/user?page=34&size=3
-Authorization: {{Authorization}}
+GET http://{{host}}/user
 ###
 # @name create-user
 POST http://{{host}}/user
@@ -67,11 +66,11 @@ Content-Type: {{ContentType}}
 }
 ###
 # @name get-post
-GET http://{{host}}/post/1
+GET http://{{host}}/post/101
 Authorization: {{Authorization}}
 ###
 # @name update-post
-POST http://{{host}}/post/1
+POST http://{{host}}/post/101
 Authorization: {{Authorization}}
 Content-Type: {{ContentType}}
 
@@ -82,5 +81,54 @@ Content-Type: {{ContentType}}
 ###
 # @name delete-post
 DELETE  http://{{host}}/post/1
+Authorization: {{Authorization}}
+###
+# @name tag-post
+POST  http://{{host}}/post/101/tag
+Authorization: {{Authorization}}
+Content-Type: {{ContentType}}
+
+{
+  "tags": [1,2,3,4444]
+}
+###
+# @name untag-post
+POST  http://{{host}}/post/101/untag
+Authorization: {{Authorization}}
+Content-Type: {{ContentType}}
+
+{
+  "tags": [1,2,3,4,5]
+}
+###
+
+# @name list-tags
+GET http://{{host}}/tag
+Authorization: {{Authorization}}
+###
+# @name create-tag
+POST http://{{host}}/tag
+Authorization: {{Authorization}}
+Content-Type: {{ContentType}}
+
+{
+  "name": "tag"
+}
+###
+# @name get-tag
+GET http://{{host}}/tag/26
+Authorization: {{Authorization}}
+###
+# @name update-tag
+POST http://{{host}}/tag/26
+Authorization: {{Authorization}}
+Content-Type: {{ContentType}}
+
+{
+  "name": "gat"
+}
+###
+# @name delete-tag
+DELETE  http://{{host}}/tag/1
 Authorization: {{Authorization}}
 ###

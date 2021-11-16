@@ -5,9 +5,14 @@ import {
   addPaginationData,
   getPaginationParams,
   errors,
+  filterAsync,
 } from "util/";
-import { PostEntity, sequelize } from "database";
-import { PostCreationParams, PostUpdateParams } from "dtos/index";
+import { PostEntity, sequelize, TagEntity } from "database";
+import {
+  PostCreationParams,
+  PostUpdateParams,
+  PostTagsParams,
+} from "dtos/index";
 
 export default {
   async findAll(this: IHandlerContext): Promise<void> {
@@ -21,7 +26,16 @@ export default {
   },
   async findOne(this: IHandlerContext): Promise<void> {
     const { id } = this.req!.params;
-    const post = await PostEntity.scope(["withAuthor", "detail"]).findByPk(id);
+    const post = await PostEntity.scope(["withAuthor", "detail"]).findByPk(id, {
+      include: [
+        {
+          model: TagEntity.scope("detail"),
+          required: false,
+          as: "tags",
+          through: { attributes: [] },
+        },
+      ],
+    });
 
     if (!post) throw errors.notFound("Post not found");
     ForbiddenError.from(this.req!.ability).throwUnlessCan("read", post);
@@ -71,5 +85,43 @@ export default {
     await post.destroy();
 
     this.res!.status(200).end();
+  },
+  async addTags(this: IHandlerContext): Promise<void> {
+    const data: PostTagsParams = this.req!.body;
+    const { id } = this.req!.params;
+
+    const post = await PostEntity.scope("detail").findByPk(id);
+
+    if (!post) throw errors.notFound("Post not found");
+    ForbiddenError.from(this.req!.ability).throwUnlessCan("update", post);
+
+    const ids = await filterAsync(data.tags, async id => {
+      const result = await TagEntity.findByPk(id);
+
+      return Boolean(result);
+    });
+    //@ts-ignore-next-line
+    const result = await post.addTags(ids);
+
+    this.res!.status(200).json({ updated: result?.length ?? 0 });
+  },
+  async removeTags(this: IHandlerContext): Promise<void> {
+    const data: PostTagsParams = this.req!.body;
+    const { id } = this.req!.params;
+
+    const post = await PostEntity.scope("detail").findByPk(id);
+
+    if (!post) throw errors.notFound("Post not found");
+    ForbiddenError.from(this.req!.ability).throwUnlessCan("update", post);
+
+    const ids = await filterAsync(data.tags, async id => {
+      const result = await TagEntity.findByPk(id);
+
+      return Boolean(result);
+    });
+    //@ts-ignore-next-line
+    const result = await post.removeTags(ids);
+
+    this.res!.status(200).json({ updated: result });
   },
 };
