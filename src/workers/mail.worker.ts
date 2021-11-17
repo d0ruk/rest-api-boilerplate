@@ -34,7 +34,7 @@ mailQueue.process(async (job: Job<any>) => {
   if (!templates.includes(template) || process.env.NODE_ENV === "test") {
     throw new Error(util.format("Skipping job", job.id));
   } else {
-    logger.info(util.format("PID %s processing mail job %d", process.pid, id));
+    logger.debug(util.format("PID %s processing mail job %d", process.pid, id));
   }
 
   const { subject, html } = await email.renderAll(template, locals);
@@ -46,7 +46,7 @@ mailQueue.process(async (job: Job<any>) => {
       html,
       subject,
     });
-    logger.info(util.format("%s mail sent to %s", template, to));
+    logger.debug(util.format("%s mail sent to %s", template, to));
   } catch (error) {
     throw new Error(util.format("Sending %s mail failed: %O", template, error));
   }

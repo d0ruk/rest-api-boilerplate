@@ -41,7 +41,7 @@ export const createMailJob = (
     if (err) {
       logger.error(util.format("Mail job %d failed to save %O", job.id, err));
     } else {
-      logger.info(util.format("Saved mail job %s", job.id));
+      logger.debug(util.format("Saved mail job %s", job.id));
     }
   });
 

@@ -15,6 +15,7 @@ app.use(
     winstonInstance: logger,
     expressFormat: true,
     ignoredRoutes: ["/"],
+    meta: process.env.NODE_ENV === "development",
   })
 );
 

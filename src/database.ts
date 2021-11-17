@@ -10,7 +10,7 @@ export const sequelize = new Sequelize.Sequelize({
   ...dbConfig,
   logQueryParameters: process.env.NODE_ENV === "development",
   logging: (query: string, time: number) => {
-    logger.info(`${time} ms | ${query}`);
+    logger.debug(`${time} ms | ${query}`);
   },
   benchmark: true,
 });
