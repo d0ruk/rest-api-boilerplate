@@ -1,0 +1,15 @@
+version: "3.6"
+
+services:
+  api:
+    image: rest-api_dev:latest
+    container_name: rest-api_ci
+    build:
+      target: build
+    volumes:
+      - ./src:/home/node/app/src
+      - ./__tests__:/home/node/app/__tests__
+      - ./node_modules:/home/node/app/node_modules
+      - ./jest.config.ts:/home/node/app/jest.config.ts
+    environment:
+      NODE_ENV: test

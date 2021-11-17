@@ -5,10 +5,11 @@
   "scripts": {
     "start": "docker-compose -f docker-compose.yml up",
     "dev": "docker-compose up",
+    "ci": "docker-compose -f docker-compose.yml -f docker-compose.ci.yml up",
     "app:start": "npm run build && NODE_ENV=production node dist",
     "app:dev": "nodemon",
     "build": "tsc",
-    "test": "NODE_ENV=test jest"
+    "test": "jest --runInBand"
   },
   "author": "Doruk Kutlu",
   "license": "MIT",
