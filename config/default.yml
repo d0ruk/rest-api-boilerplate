@@ -10,6 +10,10 @@ app:
     digest: whirlpool
     iterations: 1000
     keylen: 64
+  admin:
+    name: Admin User
+    password: wordpass
+    email: admin@localhost.com
 redis:
   host: redis
   port: 6379
