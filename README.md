@@ -21,6 +21,8 @@ Make sure you have an instance of MySQL and Redis running on `localhost`
 - **yarn start** - compose production containers & start app
 - **yarn dev** - compose development containers & watch `/src`
 
+- **yarn ci** - compose CI container and watch tests in `__tests__/` & `*.spec.ts` files
+
 ---
 
 Adminer is @ http://localhost:8888

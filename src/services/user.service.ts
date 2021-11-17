@@ -95,6 +95,6 @@ export default {
 
     await user.destroy();
 
-    this.res!.status(200).end();
+    this.res!.status(200).send({});
   },
 };
